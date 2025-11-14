@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeoSite - Modern & Professionell</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Grundlayout */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Roboto', sans-serif; }
+    body { background: linear-gradient(135deg,#0f2027,#203a43,#2c5364); color:#fff; overflow-x:hidden; }
+
+    header {
+      display:flex; justify-content:space-between; align-items:center; padding:20px 50px;
+      background:rgba(0,0,0,0.5); backdrop-filter:blur(10px);
+      position:fixed; width:100%; top:0; z-index:1000;
+    }
+    header h1 { font-size:2rem; }
+    nav a {
+      color:#fff; text-decoration:none; margin-left:30px; font-weight:500;
+      transition:0.3s;
+    }
+    nav a:hover { color:#ff4b2b; }
+
+    /* Hero-Sektion */
+    .hero {
+      height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;
+      text-align:center; padding:0 20px;
+    }
+    .hero h2 { font-size:3rem; margin-bottom:20px; animation:fadeInDown 1s ease forwards; }
+    .hero p { font-size:1.2rem; margin-bottom:40px; animation:fadeInUp 1s ease forwards; }
+    .btn { padding:15px 30px; font-size:1rem; border:none; cursor:pointer; border-radius:50px;
+      background:linear-gradient(45deg,#ff4b2b,#ff416c); color:#fff; transition:0.3s;
+    }
+    .btn:hover { transform:scale(1.1); }
+
+    /* Animations */
+    @keyframes fadeInDown { 0%{opacity:0; transform:translateY(-50px);} 100%{opacity:1; transform:translateY(0);} }
+    @keyframes fadeInUp { 0%{opacity:0; transform:translateY(50px);} 100%{opacity:1; transform:translateY(0);} }
+
+    /* Features */
+    .features { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:40px; padding:80px 50px; }
+    .card { background:rgba(255,255,255,0.1); padding:30px; border-radius:20px; text-align:center;
+      transition:0.3s; backdrop-filter:blur(5px);
+    }
+    .card:hover { transform:translateY(-10px); background:rgba(255,255,255,0.2); }
+
+    /* Footer */
+    footer { text-align:center; padding:40px; background:rgba(0,0,0,0.7); }
+
+    /* Überraschungseffekt */
+    .confetti { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>NeoSite</h1>
+  <nav>
+    <a href="#features">Features</a>
+    <a href="#contact">Kontakt</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <h2>Willkommen auf NeoSite</h2>
+  <p>Eine moderne, professionelle Website für GitHub Pages</p>
+  <button class="btn" onclick="startConfetti()">Überraschung!</button>
+</div>
+
+<section class="features" id="features">
+  <div class="card">
+    <h3>Schnell & Responsiv</h3>
+    <p>Optimiert für Desktop, Tablet und Handy – überall perfekt dargestellt.</p>
+  </div>
+  <div class="card">
+    <h3>Modernes Design</h3>
+    <p>Animierte Buttons, Farbverläufe und Glas-Effekte für einen professionellen Look.</p>
+  </div>
+  <div class="card">
+    <h3>Einfach zu erweitern</h3>
+    <p>Füge weitere Seiten, Features oder Bots direkt über GitHub hinzu.</p>
+  </div>
+</section>
+
+<footer id="contact">
+  <p>&copy; 2025 NeoSite | Made with 💖 by You</p>
+</footer>
+
+<canvas class="confetti"></canvas>
+
+<script>
+  // Confetti Überraschung
+  const canvas = document.querySelector('.confetti');
+  const ctx = canvas.getContext('2d');
+  let w = canvas.width = window.innerWidth;
+  let h = canvas.height = window.innerHeight;
+  let particles = [];
+
+  function random(min,max){ return Math.random()*(max-min)+min; }
+  function initConfetti(){
+    particles = [];
+    for(let i=0;i<150;i++){
+      particles.push({x:random(0,w), y:random(0,h), r:random(2,6), d:random(1,4), color:`hsl(${random(0,360)},100%,50%)`});
+    }
+  }
+  function drawConfetti(){
+    ctx.clearRect(0,0,w,h);
+    particles.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color;
+      ctx.fill();
+      p.y += p.d;
+      if(p.y>h){p.y=0; p.x=random(0,w);}
+    });
+    requestAnimationFrame(drawConfetti);
+  }
+  function startConfetti(){ initConfetti(); drawConfetti(); }
+
+  window.addEventListener('resize', ()=>{ w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; });
+</script>
+
+</body>
+</html>
